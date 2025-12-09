@@ -36,7 +36,7 @@ if [ -z ${user+x} ] || [ -z ${password+x} ]
 call=$1
 
 # get a session key from qrz.com
-session_xml=$(curl -s -X GET 'http://xmldata.qrz.com/xml/current/?username='${user}';password='${password}';agent=qrz_sh')
+session_xml=$(curl -s -X GET 'https://xmldata.qrz.com/xml/current/?username='${user}';password='${password}';agent=qrz_sh')
 
 # check for login errors
 #e=$(printf %s "$session_xml" | grep -oP "(?<=<Error>).*?(?=</Error>)" ) # only works with GNU grep
@@ -52,7 +52,7 @@ if [ "$e" != ""  ]
 session_key=$(printf %s "$session_xml" | awk -v FS="(<Key>|<\/Key>)" '{print $2}' 2>/dev/null | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n//g')
 
 # lookup callsign at qrz.com
-lookup_result=$(curl -s -X GET 'http://xmldata.qrz.com/xml/current/?s='${session_key}';callsign='${call}'')
+lookup_result=$(curl -s -X GET 'https://xmldata.qrz.com/xml/current/?s='${session_key}';callsign='${call}'')
 
 # check for login errors
 #e=$(printf %s "$lookup_result" | grep -oP "(?<=<Error>).*?(?=</Error>)" ) # only works with GNU grep
